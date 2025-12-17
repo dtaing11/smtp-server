@@ -10,11 +10,11 @@ import (
 
 func sendEmail(receiver string, firstName string, lastName string) error {
 
-	from := os.Getenv("EMAIL")
-	password := os.Getenv("PASSWORD")
-	port := "587"
+	from := os.Getenv("SMTP_EMAIL")
+	password := os.Getenv("SMTP_PASSWORD")
+	port := os.Getenv("SMTP_PORT")
+	host := os.Getenv("HOST")
 
-	host := "smtp.gmail.com"
 	toList := []string{receiver}
 
 	htmlBody := emailTemplate(lastName)
@@ -40,7 +40,7 @@ func sendEmail(receiver string, firstName string, lastName string) error {
 	err := smtp.SendMail(host+":"+port, auth, from, toList, msg)
 
 	if err != nil {
-		log.Print("[SMTP] error to send an email")
+		log.Print(err)
 		return err
 	}
 
